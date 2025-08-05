@@ -25,6 +25,7 @@ var mainVar string = getMainVar() + pkg1.PkgNameVar
 
 func init() {
 	fmt.Println("main init")
+	fmt.Println("main 11111")
 }
 
 func main() {
