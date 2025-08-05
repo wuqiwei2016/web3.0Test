@@ -15,7 +15,13 @@ package main
 //... existing code ...
 import (
 	"fmt"
+
+	"github.com/learn/init_order/pkg1"
 )
+
+const mainName string = "main"
+
+var mainVar string = getMainVar() + pkg1.PkgNameVar
 
 func init() {
 	fmt.Println("main init")
@@ -27,4 +33,9 @@ func main() {
 	var bytes []byte = []byte(s)
 	fmt.Println("convert \"Hello, world!\" to bytes: ", bytes)
 	fmt.Println(string(bytes))
+}
+
+func getMainVar() string {
+	fmt.Println("main.mainVar has been initialized")
+	return mainName
 }
