@@ -15,28 +15,63 @@ package main
 //... existing code ...
 import (
 	"fmt"
-
-	"github.com/learn/init_order/pkg1"
 )
 
-const mainName string = "main"
+// var s1 string = "Hello"
+// var zero int
+// var b1 = true
 
-var mainVar string = getMainVar() + pkg1.PkgNameVar
+// var (
+// 	i  int = 123
+// 	b2 bool
+// 	s2 = "test"
+// )
 
-func init() {
-	fmt.Println("main init")
-	fmt.Println("main 11111")
-}
+// var (
+// 	group = 2
+// )
+
+// func init() {
+// 	fmt.Println(s1)
+// 	fmt.Println("main init")
+// 	fmt.Println("main 11111")
+// }
 
 func main() {
-	// fmt.Println("main.main() method invoked")
-	var s string = "Hello, world!"
-	var bytes []byte = []byte(s)
-	fmt.Println("convert \"Hello, world!\" to bytes: ", bytes)
-	fmt.Println(string(bytes))
+	fmt.Println("main.main() method invoked")
+	// var s string = "Hello, world!"
+	// var bytes []byte = []byte(s)
+	// fmt.Println("convert \"Hello, world!\" to bytes: ", bytes)
+	// fmt.Println(string(bytes))
 }
 
-func getMainVar() string {
-	fmt.Println("main.mainVar has been initialized")
-	return mainName
+//	func getMainVar() string {
+//		fmt.Println("main.mainVar has been initialized")
+//		return mainName
+//	}
+func method1() {
+	// 方式1，类型推导，用得最多
+	a := 1
+	// 方式2，完整的变量声明写法
+	var b int = 2
+	// 方式3，仅声明变量，但是不赋值，
+	var c int
+	fmt.Println(a, b, c)
+}
+
+// 方式4，直接在返回值中声明
+func method2() (a int, b string) {
+	// 这种方式必须声明return关键字
+	// 并且同样不需要使用，并且也不用必须给这种变量赋值
+	return 1, "test"
+}
+
+func method3() (a int, b string) {
+	a = 1
+	b = "test"
+	return
+}
+
+func method4() (a int, b string) {
+	return
 }
