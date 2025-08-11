@@ -162,8 +162,8 @@ func main() {
 	point(&a, "any")
 
 	pa := &a
-	// a.setA("va")
-	// a.setPA("pa")
+	a.setA("va")
+	a.setPA("pa")
 	// pa.setA("pppp")
 	// pa.setPA("vvvv")
 	fmt.Println(a.string())

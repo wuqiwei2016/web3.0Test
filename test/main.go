@@ -17,6 +17,18 @@ import (
 	"fmt"
 )
 
+// const name string = "Go语言"
+
+// const c, b = 1, "2"
+
+// const e, f = true, false
+
+// type Gender string
+
+// const (
+//    Male   Gender = "Male"
+//    Female Gender = "Female"
+// )
 // var s1 string = "Hello"
 // var zero int
 // var b1 = true
@@ -31,14 +43,79 @@ import (
 // 	group = 2
 // )
 
-// func init() {
-// 	fmt.Println(s1)
-// 	fmt.Println("main init")
-// 	fmt.Println("main 11111")
+//	func init() {
+//		fmt.Println(s1)
+//		fmt.Println("main init")
+//		fmt.Println("main 11111")
+//	}
+//
+// src/net/http/server.go
+// type ConnState int
+
+// const (
+// 	StateNew ConnState = iota
+// 	StateActive
+// 	StateIdle
+// 	StateHijacked
+// 	StateClosed
+// )
+
+// // src/time/time.go
+type Month int
+
+const (
+	January Month = 1 + iota
+	February
+	March
+	April
+	May
+	June
+	July
+	August
+	September
+	October
+	November
+	December
+)
+const (
+	a int = iota
+	b
+	c
+	d
+)
+
+// type Gender byte
+
+// const (
+// 	Male Gender = iota
+// 	Female
+// )
+
+// func (g *Gender) isMale() bool {
+// 	return *g == Male
+// }
+
+// func (g *Gender) isFemale() bool {
+// 	return *g == Female
 // }
 
 func main() {
-	fmt.Println("main.main() method invoked")
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(c)
+	fmt.Println(d)
+
+	// var Gender = Male
+	// if Gender.isMale() {
+	// 	fmt.Println("male")
+	// } else {
+	// 	fmt.Println("female")
+	// }
+
+	// fmt.Println(January)
+	// fmt.Println(February)
+
+	// fmt.Println("main.main() method invoked")
 	// var s string = "Hello, world!"
 	// var bytes []byte = []byte(s)
 	// fmt.Println("convert \"Hello, world!\" to bytes: ", bytes)
