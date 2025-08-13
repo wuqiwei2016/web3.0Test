@@ -2,52 +2,146 @@ package main
 
 import "fmt"
 
-type A struct {
-	i int
-}
-
-func (a *A) add(v int) int {
-	a.i += v
-	return a.i
-}
-
-// 声明函数变量
-var function1 func(int) int
-
-// 声明闭包
-var squart2 func(int) int = func(p int) int {
-	p *= p
-	return p
-}
-
 func main() {
-	a := A{1}
-	// // 把方法赋值给函数变量
-	function1 = a.add
+	// var a [5]int
+	// fmt.Println("a", a)
 
-	// // 声明一个闭包并直接执行
-	// // 此闭包返回值是另外一个闭包（带参闭包）
-	returnFunc := func() func(int, string) (int, string) {
-		fmt.Println("this is a anonymous function")
-		return func(i int, s string) (int, string) {
-			return i, s
-		}
-	}()
+	// var b [5]int = [5]int{1, 2, 3, 4, 5}
+	// fmt.Println("b", b)
 
-	// // 执行returnFunc闭包并传递参数
-	// ret1, ret2 := returnFunc(1, "test")
-	// fmt.Println("call closure function, return1 = ", ret1, "; return2 = ", ret2)
+	// //类型推导
+	// var c = [5]string{"1", "2", "3", "4", "5"}
+	// // c := [5]string{"1", "2", "3", "4", "5"}
+	// fmt.Println("c", c)
 
-	fmt.Println("a.i = ", a.i)
-	fmt.Println("after call function1, a.i = ", function1(1))
-	fmt.Println("a.i = ", a.i)
-	fmt.Println("after call function1, a.i = ", a.add(2))
+	// autolen := [...]string{"1", "2", "3", "4", "5"}
+	// fmt.Println("autolen", autolen)
 
-	// fmt.Println("a.i = ", a.i)
-	// 调用通过IIFE获得的内层函数
-	ret1, ret2 := returnFunc(100, "hello")
-	fmt.Println(ret1, ret2) // 输出：100 hello
+	// print := func(sarr [5]string) {
+	// 	fmt.Println("sarr=", sarr)
+	// }
+	// print(autolen)
+
+	a := [5]int{1, 2, 3, 4, 5}
+	b := a[2]
+	fmt.Println(b)
+
+	for i, v := range a {
+		fmt.Println(i, v)
+	}
+
+	for v := range a {
+		fmt.Println(v)
+	}
+
+	for i := 0; i < len(a); i++ {
+		fmt.Println(a[i])
+	}
+	// fmt.Println("autolen", autolen)
+
+	// var a int = 1
+	// if b := 1; b == 0 {
+	// 	fmt.Println("b == 0")
+	// } else {
+	// 	c := 2
+	// 	fmt.Println("declare c = ", c)
+	// 	fmt.Println("b == 1", b)
+	// }
+	// fmt.Println(a)
 }
+
+// switch d := 3; d {
+// case 1:
+// 	e := 4
+// 	fmt.Println("declare e = ", e)
+// 	fmt.Println("d == 1")
+// case 3:
+// 	f := 4
+// 	fmt.Println("declare f = ", f)
+// 	fmt.Println("d == 3")
+// }
+// fmt.Println(e)
+// fmt.Println(f)
+
+// for i := 0; i < 1; i++ {
+// 	forA := 1
+// 	fmt.Println("forA = ", forA)
+// }
+// // fmt.Println("forA = ", forA)
+
+// select {
+// case <-time.After(time.Second):
+// 	selectA := 1
+// 	fmt.Println("selectA = ", selectA)
+// }
+// // fmt.Println("selectA = ", selectA)
+
+// // 匿名代码块
+// {
+// 	blockA := 1
+// 	fmt.Println("blockA = ", blockA)
+// }
+// // fmt.Println("blockA = ", blockA)
+
+// fmt.Println("a = ", a)
+// }
+
+// type A struct {
+// 	i int
+// }
+
+// type B struct {
+// 	i int
+// }
+
+// func (a *A) add(v int) int {
+// 	a.i += v
+// 	return a.i
+// }
+
+// func (b *B) add(t int) int {
+// 	b.i += t
+// 	return b.i
+// }
+
+// // 声明函数变量
+// var function1 func(int) int
+
+// // 声明闭包
+// var squart2 func(int) int = func(p int) int {
+// 	p *= p
+// 	return p
+// }
+
+// func main() {
+// 	a := A{1}
+// 	// // 把方法赋值给函数变量
+// 	function1 = a.add
+
+// 	// // 声明一个闭包并直接执行
+// 	// // 此闭包返回值是另外一个闭包（带参闭包）
+// 	// returnFunc := func() func(int, string) (int, string) {
+// 	// 	fmt.Println("this is a anonymous function")
+// 	// 	return func(i int, s string) (int, string) {
+// 	// 		return i, s
+// 	// 	}
+// 	// }()
+
+// 	// // 执行returnFunc闭包并传递参数
+// 	// ret1, ret2 := returnFunc(1, "test")
+// 	// fmt.Println("call closure function, return1 = ", ret1, "; return2 = ", ret2)
+
+// 	fmt.Println("a.i = ", a.i)
+// 	fmt.Println("after call function1, a.i = ", function1(1))
+// 	fmt.Println("after call function1, a.i = ", a.add(2))
+// 	//
+// 	// fmt.Println("a.i = ", a.i)
+
+// 	// // fmt.Println("a.i = ", a.i)
+// 	// // 调用通过IIFE获得的内层函数
+// 	// ret1, ret2 := returnFunc(100, "hello")
+// 	// fmt.Println(ret1, ret2) // 输出：100 hello
+// }
 
 // func main() {
 // preset:
