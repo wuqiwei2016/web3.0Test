@@ -3,52 +3,173 @@ package main
 import "fmt"
 
 func main() {
-	// var a [5]int
-	// fmt.Println("a", a)
+	m := make(map[string]int)
+	// m := make(map[string]int, 10)
 
-	// var b [5]int = [5]int{1, 2, 3, 4, 5}
-	// fmt.Println("b", b)
+	m["1"] = int(1)
+	m["2"] = int(2)
+	m["3"] = int(3)
+	m["4"] = int(4)
+	m["5"] = int(5)
+	m["6"] = int(6)
 
-	// //类型推导
-	// var c = [5]string{"1", "2", "3", "4", "5"}
-	// // c := [5]string{"1", "2", "3", "4", "5"}
-	// fmt.Println("c", c)
+	// 获取元素
+	value1 := m["1"]
+	fmt.Println("m[\"1\"] =", value1)
 
-	// autolen := [...]string{"1", "2", "3", "4", "5"}
-	// fmt.Println("autolen", autolen)
+	value1, exist := m["1"]
+	fmt.Println("m[\"1\"] =", value1, ", exist =", exist)
 
-	// print := func(sarr [5]string) {
-	// 	fmt.Println("sarr=", sarr)
-	// }
-	// print(autolen)
+	valueUnexist, exist := m["10"]
+	fmt.Println("m[\"10\"] =", valueUnexist, ", exist =", exist)
 
-	a := [5]int{1, 2, 3, 4, 5}
-	b := a[2]
-	fmt.Println(b)
+	// 修改值
+	fmt.Println("before modify, m[\"2\"] =", m["2"])
+	m["2"] = 20
+	fmt.Println("after modify, m[\"2\"] =", m["2"])
 
-	for i, v := range a {
-		fmt.Println(i, v)
+	// 获取map的长度
+	fmt.Println("before add, len(m) =", len(m))
+	m["10"] = 10
+	fmt.Println("after add, len(m) =", len(m))
+
+	// 遍历map集合main
+	for key, value := range m {
+		fmt.Println("iterate map, m[", key, "] =", value)
 	}
 
-	for v := range a {
-		fmt.Println(v)
-	}
+	// 使用内置函数删除指定的key
+	_, exist_10 := m["10"]
+	fmt.Println("before delete, exist 10: ", exist_10)
+	delete(m, "10")
+	_, exist_10 = m["10"]
+	fmt.Println("after delete, exist 10: ", exist_10)
 
-	for i := 0; i < len(a); i++ {
-		fmt.Println(a[i])
+	// 在遍历时，删除map中的key
+	for key := range m {
+		fmt.Println("iterate map, will delete key:", key)
+		delete(m, key)
 	}
-	// fmt.Println("autolen", autolen)
-
-	// var a int = 1
-	// if b := 1; b == 0 {
-	// 	fmt.Println("b == 0")
-	// } else {
-	// 	c := 2
-	// 	fmt.Println("declare c = ", c)
-	// 	fmt.Println("b == 1", b)
-	// }
-	// fmt.Println(a)
+	fmt.Println("m = ", m)
 }
+
+// map
+// func main() {
+// 	var m1 map[string]string
+// 	fmt.Println("m1 length:", len(m1))
+
+// 	m2 := make(map[string]string)
+// 	fmt.Println("m2 length:", len(m2))
+// 	fmt.Println("m2 =", m2)
+
+// 	// m1是没法写入数据的,m2可以
+
+// 	m3 := make(map[string]string, 10)
+// 	fmt.Println("m3 length:", len(m3))
+// 	fmt.Println("m3 =", m3)
+
+// 	m4 := map[string]string{}
+// 	fmt.Println("m4 length:", len(m4))
+// 	fmt.Println("m4 =", m4)
+
+// 	m5 := map[string]string{
+// 		"key1": "value1",
+// 		"key2": "value2",
+// 	}
+// 	fmt.Println("m5 length:", len(m5))
+// 	fmt.Println("m5 =", m5)
+// }
+
+// func main() {
+// 	s := make([]int, 3, 6)
+// 	fmt.Println("initial, s =", s)
+// 	s[1] = 2
+// 	fmt.Println("after set position 1, s =", s)
+
+// 	s2 := append(s, 4)
+// 	// fmt.Println("after append, s2 length:", len(s2))
+// 	// fmt.Println("after append, s2 capacity:", cap(s2))
+// 	fmt.Println("after append, s =", s)
+// 	fmt.Println("after append, s2 =", s2)
+
+// 	s[0] = 1024
+// 	fmt.Println("after set position 0, s =", s)
+// 	fmt.Println("after set position 0, s2 =", s2)
+
+// 	appendInFunc(s)
+// 	fmt.Println("after append in func, s =", s)
+// 	fmt.Println("after append in func, s2 =", s2)
+// }
+
+// func appendInFunc(param []int) {
+// 	param = append(param, 1022)
+// 	fmt.Println("in func, param =", param)
+// 	param[2] = 512
+// 	fmt.Println("set position 2 in func, param =", param)
+// }
+
+// func main() {
+
+// 	// 切片
+
+// 	// s3 := []int{}
+// 	// fmt.Println("s3 = ", s3)
+
+// 	// // append函数追加元素
+// 	// s3 = append(s3)
+// 	// s3 = append(s3, 1)
+// 	// s3 = append(s3, 2, 3)
+// 	// fmt.Println("s3 = ", s3)
+// 	// 移除
+// 	// s5 := []int{1, 2, 3, 5, 4}
+// 	// s5 = append(s5[:3], s5[4:]...)
+// 	// fmt.Println("s5 = ", s5)
+// 	// var a [5]int
+// 	// fmt.Println("a", a)
+
+// 	// var b [5]int = [5]int{1, 2, 3, 4, 5}
+// 	// fmt.Println("b", b)
+
+// 	// //类型推导
+// 	// var c = [5]string{"1", "2", "3", "4", "5"}
+// 	// // c := [5]string{"1", "2", "3", "4", "5"}
+// 	// fmt.Println("c", c)
+
+// 	// autolen := [...]string{"1", "2", "3", "4", "5"}
+// 	// fmt.Println("autolen", autolen)
+
+// 	// print := func(sarr [5]string) {
+// 	// 	fmt.Println("sarr=", sarr)
+// 	// }
+// 	// print(autolen)
+
+// 	// a := [5]int{1, 2, 3, 4, 5}
+// 	// b := a[2]
+// 	// fmt.Println(b)
+
+// 	// for i, v := range a {
+// 	// 	fmt.Println(i, v)
+// 	// }
+
+// 	// for v := range a {
+// 	// 	fmt.Println(v)
+// 	// }
+
+// 	// for i := 0; i < len(a); i++ {
+// 	// 	fmt.Println(a[i])
+// 	// }
+// 	// fmt.Println("autolen", autolen)
+
+// 	// var a int = 1
+// 	// if b := 1; b == 0 {
+// 	// 	fmt.Println("b == 0")
+// 	// } else {
+// 	// 	c := 2
+// 	// 	fmt.Println("declare c = ", c)
+// 	// 	fmt.Println("b == 1", b)
+// 	// }
+// 	// fmt.Println(a)
+// }
 
 // switch d := 3; d {
 // case 1:

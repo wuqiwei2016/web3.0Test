@@ -85,5 +85,8 @@ func main() {
 	strs3 := []string{"apple", "app", "bann"}
 	fmt.Printf("输入: strs = %v\n输出: %s\n", strs3, dealCommonPreFix(strs3))
 	// 基本值类型
-
+	fmt.Println(plusOne([]int{1, 2, 3}))    // 输出: [1 2 4]
+	fmt.Println(plusOne([]int{4, 3, 2, 1})) // 输出: [4 3 2 2]
+	fmt.Println(plusOne([]int{9}))          // 输出: [1 0]
+	fmt.Println(plusOne([]int{9, 9, 9}))    // 输出: [1 0 0 0]
 }
