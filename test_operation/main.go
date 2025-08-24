@@ -2,54 +2,109 @@ package main
 
 import (
 	"fmt"
-	"time"
+
+	"gorm.io/gorm"
 )
 
-// 只接收channel的函数
-func receiveOnly(ch <-chan int) {
-	for v := range ch {
-		fmt.Printf("接收到: %d\n", v)
-	}
+type Dog struct {
+	ID   int
+	Name string
+	// Toy  Toy `gorm:"polymorphic:Owner"`
+	Toy Toy `gorm:"polymorphicType:Kind;polymorphicId:TID;polymorphicValue:dog"`
 }
 
-// 只发送channel的函数
-func sendOnly(ch chan<- int) {
-	for i := 0; i < 5; i++ {
-		ch <- i //将变量 i 的值发送到通道 ch 中
-		fmt.Printf("发送: %d\n", i)
-	}
-	close(ch)
+type Cat struct {
+	ID   int
+	Name string
+	Age  int
+	// Toy  Toy `gorm:"polymorphic:Owner"`
+	Toy Toy `gorm:"polymorphicType:Kind;polymorphicId:TID;polymorphicValue:cat"`
 }
 
-func main() {
-	// 创建一个带缓冲的channel
-	ch := make(chan int, 3)
-
-	// 启动发送goroutine
-	go sendOnly(ch)
-
-	// 启动接收goroutine
-	go receiveOnly(ch)
-
-	// 使用select进行多路复用
-	timeout := time.After(2 * time.Second)
-	for {
-		select {
-		case v, ok := <-ch:
-			if !ok {
-				fmt.Println("Channel已关闭")
-				return
-			}
-			fmt.Printf("主goroutine接收到: %d\n", v)
-		case <-timeout:
-			fmt.Println("操作超时")
-			return
-		default:
-			fmt.Println("没有数据，等待中...")
-			time.Sleep(500 * time.Millisecond)
-		}
-	}
+type Toy struct {
+	ID   int
+	Name string
+	Kind string
+	TID  int
 }
+
+func (c *Cat) AfterDelete(tx *gorm.DB) error {
+	fmt.Println(c)
+	return nil
+}
+
+func (c *Cat) BeforeDelete(tx *gorm.DB) error {
+	fmt.Println(c)
+	return nil
+}
+
+func Run(db *gorm.DB) {
+	db.AutoMigrate(&Dog{}, &Cat{}, &Toy{})
+
+	// 多态
+	db.Create(&Dog{Name: "wangcai", Toy: Toy{Name: "gutou"}})
+	db.Create(&Cat{Name: "mimi", Toy: Toy{Name: "doumaobang"}, Age: 1})
+	db.Create(&Cat{Name: "mimi2", Toy: Toy{Name: "doumaobang"}, Age: 2})
+	db.Create(&Cat{Name: "mimi3", Toy: Toy{Name: "doumaobang"}, Age: 3})
+
+	// var dog Dog
+	// var cat Cat
+	// db.Preload("Toy").First(&dog)
+	// db.Preload("Toy").First(&cat)
+	// fmt.Println(dog, cat)
+
+	// RunHook(db)
+	// RunTransaction(db)
+	// RunDefinition(db)
+
+	db.Debug().Where("age > ?", 2).Delete(&Cat{})
+}
+
+// // 只接收channel的函数
+// func receiveOnly(ch <-chan int) {
+// 	for v := range ch {
+// 		fmt.Printf("接收到: %d\n", v)
+// 	}
+// }
+
+// // 只发送channel的函数
+// func sendOnly(ch chan<- int) {
+// 	for i := 0; i < 5; i++ {
+// 		ch <- i //将变量 i 的值发送到通道 ch 中
+// 		fmt.Printf("发送: %d\n", i)
+// 	}
+// 	close(ch)
+// }
+
+// func main() {
+// 	// 创建一个带缓冲的channel
+// 	ch := make(chan int, 3)
+
+// 	// 启动发送goroutine
+// 	go sendOnly(ch)
+
+// 	// 启动接收goroutine
+// 	go receiveOnly(ch)
+
+// 	// 使用select进行多路复用
+// 	timeout := time.After(2 * time.Second)
+// 	for {
+// 		select {
+// 		case v, ok := <-ch:
+// 			if !ok {
+// 				fmt.Println("Channel已关闭")
+// 				return
+// 			}
+// 			fmt.Printf("主goroutine接收到: %d\n", v)
+// 		case <-timeout:
+// 			fmt.Println("操作超时")
+// 			return
+// 		default:
+// 			fmt.Println("没有数据，等待中...")
+// 			time.Sleep(500 * time.Millisecond)
+// 		}
+// 	}
+// }
 
 // package main
 
