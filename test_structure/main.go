@@ -151,34 +151,39 @@ func NewC() C {
 	}
 }
 
-func main() {
+func test1() {
+	fmt.Println("test")
+}
 
+func main() {
+	test1()
 	a := A{
 		a: "a",
 	}
-	copy := a
-	copy.a = "copy"
-	value(a, "any")
-	point(&a, "any")
 
-	pa := &a
-	a.setA("va")
-	a.setPA("pa")
+	///////
+	copy := a
+	copy.a = "121212"
+	fmt.Println(copy.a)
+	fmt.Println(a.a)
+	// pa := &a
+	// a.setA("va")
+	// a.setPA("pa")
 	// pa.setA("pppp")
 	// pa.setPA("vvvv")
-	fmt.Println(a.string())
+	// fmt.Println(a.string())
 
-	// a A
-	fmt.Println(a.string())
-	fmt.Println(a.stringA())
-	fmt.Println(a.stringPA())
+	// // a A
+	// fmt.Println(a.string())
+	// fmt.Println(a.stringA())
+	// fmt.Println(a.stringPA())
 	// fmt.Println(a.setA("1a"))
 
 	// fmt.Println(a.setPA("2a"))
 
-	fmt.Println(pa.string())
-	fmt.Println(pa.stringA())
-	fmt.Println(pa.stringPA())
+	// fmt.Println(pa.string())
+	// fmt.Println(pa.stringA())
+	// fmt.Println(pa.stringPA())
 	// a.stringPA()
 	// a.setPA("2a")
 	// a.stringPA()
