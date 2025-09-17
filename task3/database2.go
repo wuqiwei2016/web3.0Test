@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -23,7 +24,7 @@ type Transaction struct {
  */
 func main() {
 	// 连接数据库
-	db, err := gorm.Open(sqlite.Open("transfer.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 	if err != nil {
 		panic("连接数据库失败")
 	}
