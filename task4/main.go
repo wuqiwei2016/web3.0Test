@@ -95,20 +95,20 @@ func register(c *gin.Context) {
 	// 检查用户名是否已存在
 	var existingUser User
 	if err := DB.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusConflict, gin.H{"error": "Username already exists"})
+		c.JSON(http.StatusConflict, gin.H{"error": "用户名已经存在"})
 		return
 	}
 
 	// 检查邮箱是否已存在
 	if err := DB.Where("email = ?", req.Email).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
+		c.JSON(http.StatusConflict, gin.H{"error": "邮件地址已经存在"})
 		return
 	}
 
 	// 密码加密
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "密码设置失败"})
 		return
 	}
 
@@ -120,11 +120,11 @@ func register(c *gin.Context) {
 	}
 
 	if err := DB.Create(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "创建用户失败"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+	c.JSON(http.StatusCreated, gin.H{"message": "用户请求失败"})
 }
 
 // 用户登录函数
@@ -138,13 +138,13 @@ func login(c *gin.Context) {
 	// 查找用户
 	var user User
 	if err := DB.Where("username = ?", req.Username).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户名或密码无效"})
 		return
 	}
 
 	// 验证密码
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户名或密码无效"})
 		return
 	}
 
@@ -158,7 +158,7 @@ func login(c *gin.Context) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtSecret)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "token验证失败"})
 		return
 	}
 
@@ -172,7 +172,7 @@ func login(c *gin.Context) {
 func createPost(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户未经过身份验证"})
 		return
 	}
 
@@ -189,7 +189,7 @@ func createPost(c *gin.Context) {
 	}
 
 	if err := DB.Create(&post).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create post"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "创建文章失败"})
 		return
 	}
 
@@ -200,7 +200,7 @@ func createPost(c *gin.Context) {
 func getPosts(c *gin.Context) {
 	var posts []Post
 	if err := DB.Preload("User").Find(&posts).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch posts"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取列表失败"})
 		return
 	}
 
@@ -212,7 +212,7 @@ func getPost(c *gin.Context) {
 	id := c.Param("id")
 	var post Post
 	if err := DB.Preload("User").First(&post, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "获取文章详情失败"})
 		return
 	}
 
@@ -223,20 +223,20 @@ func getPost(c *gin.Context) {
 func updatePost(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户未经过身份验证"})
 		return
 	}
 
 	id := c.Param("id")
 	var post Post
 	if err := DB.First(&post, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "文章列表未发现"})
 		return
 	}
 
 	// 检查用户是否有权限更新文章
 	if post.UserID != userID.(uint) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "You are not allowed to update this post"})
+		c.JSON(http.StatusForbidden, gin.H{"error": "没有权限修改内容"})
 		return
 	}
 
@@ -252,7 +252,7 @@ func updatePost(c *gin.Context) {
 	post.UpdatedAt = time.Now()
 
 	if err := DB.Save(&post).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update post"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "修改失败"})
 		return
 	}
 
@@ -263,36 +263,36 @@ func updatePost(c *gin.Context) {
 func deletePost(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户未经过身份验证"})
 		return
 	}
 
 	id := c.Param("id")
 	var post Post
 	if err := DB.First(&post, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "文章不存在"})
 		return
 	}
 
 	// 检查用户是否有权限删除文章
 	if post.UserID != userID.(uint) {
-		c.JSON(http.StatusForbidden, gin.H{"error": "You are not allowed to delete this post"})
+		c.JSON(http.StatusForbidden, gin.H{"error": "没有权限删除文章"})
 		return
 	}
 
 	if err := DB.Delete(&post).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete post"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "删除失败"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Post deleted successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "删除成功"})
 }
 
 // 创建评论函数
 func createComment(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "用户未经过身份验证"})
 		return
 	}
 
@@ -301,7 +301,7 @@ func createComment(c *gin.Context) {
 	// 检查文章是否存在
 	var post Post
 	if err := DB.First(&post, postID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "文章不存在"})
 		return
 	}
 
@@ -318,7 +318,7 @@ func createComment(c *gin.Context) {
 	}
 
 	if err := DB.Create(&comment).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create comment"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "创建失败"})
 		return
 	}
 
@@ -336,13 +336,13 @@ func getCommentsByPostID(c *gin.Context) {
 	// 检查文章是否存在
 	var post Post
 	if err := DB.First(&post, postID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "文章不存在"})
 		return
 	}
 
 	var comments []Comment
 	if err := DB.Preload("User").Where("post_id = ?", postID).Find(&comments).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch comments"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "失败"})
 		return
 	}
 
