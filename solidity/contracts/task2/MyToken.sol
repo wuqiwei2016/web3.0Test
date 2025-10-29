@@ -7,7 +7,7 @@ contract MyToken is IERC20,Ownable{
     string private _name = "MyToken";
     string private _symbol="MTK";
     string private _decimals = "18";   
-    uint256 private _totalSupply=1000000;
+    uint256 private _totalSupply;
 
     //账户余额
     mapping(address => uint256) private _balances;
@@ -15,7 +15,7 @@ contract MyToken is IERC20,Ownable{
     mapping(address => mapping(address => uint256)) private _allowances;
 
     constructor(uint256 initialSupply) Ownable(msg.sender){
-       _mint(msg.sender,initialSupply);
+           _mint(msg.sender, initialSupply * 10**18);  // 乘以 10^18 处理 decimals
     }
 
     // ERC20标准
